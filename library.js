@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function()
 {
     myLibrary =[]
     libraryButtonList = []
+    const bookTable = document.querySelector("#booktable");
     class Book
     {
         constructor(title,author,pages,read)
@@ -23,12 +24,50 @@ document.addEventListener("DOMContentLoaded", function()
     myLibrary.push(thirtyNineSteps);
     murphy = new Book('Murphy', 'Samuel Beckett', 158);
     myLibrary.push(murphy);
-    let bookTable = document.querySelector("#booktable");
+    
+   loadTable(myLibrary)
+   
+//    for (button of libraryButtonList)
+//    {
+//        button.addEventListener("click", function()
+//        {
+//            //change the value of .read in the table
+//            searchTitle = this.getAttribute("value");
+//            //search for the title inside the myLibrary array
+//            for (book of library)
+//            {
+//                if (book['title'] == searchTitle)
+//                {
+//                    //change book read status
+//                    if (book['read'] == false)
+//                    {
+//                        book['read'] == true;
+//                    }
+//                    else
+//                    {
+//                        book['read'] == false;
+//                    }
+//                }
+//            }
+//            //TODO REFRESH THE TABLE
+//            // DELETE INNER HTML OR 
+
+
+//        });
+//    }
+});
+
+
+//create function that loads table
+//TODO FIX ISSUE WITH BUTTON LIST KEEP ADDING MORE BUTTONS ON REFRESH
+loadTable = function(library)
+{   
+    bookTable = document.querySelector("#booktable");
     if (!bookTable)
     {
         console.log("NO TABLE")
     }
-    for (book of myLibrary)
+    for (book of library)
     {
         let bookRow = document.createElement("tr")
         //create a row in table
@@ -66,6 +105,37 @@ document.addEventListener("DOMContentLoaded", function()
         bookTable.appendChild(bookRow);
     }
 
-    
+    //create list of buttons for the table
 
-});
+    
+    for (button of libraryButtonList)
+    {
+        button.addEventListener("click", function()
+        {
+            //change the value of .read in the table
+            searchTitle = this.getAttribute("value");
+            //search for the title inside the myLibrary array
+            for (book of library)
+            {
+                if (book['title'] == searchTitle)
+                {
+                    //change book read status
+                    if (book['read'] == false)
+                    {
+                        book['read'] == true;
+                    }
+                    else
+                    {
+                        book['read'] == false;
+                    }
+                }
+            }
+            //TODO REFRESH THE TABLE
+            // DELETE INNER HTML OR 
+            bookTable.innerHTML= "";
+
+
+
+        });
+    }
+}
