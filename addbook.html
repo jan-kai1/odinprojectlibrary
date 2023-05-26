@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add A Book</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="addbook.js"></script>
+</head>
+<body>
+
+    <form id = "book-form">
+        <div class="forminput">
+            <label for="title">Title:</label>
+            <input name = "title" type="text" autocomplete="off">
+        </div>
+        <div class="forminput">
+            <label for="author">Author Name:</label>
+            <input name="author" type="text" autocomplete="off">
+        </div>
+        <div class="forminput">
+            <label for="pages">Pages:</label>
+            <input name="pages" type="number">
+        </div>
+        <div class="forminput">
+            <label for="read">Read</label>
+            <input name="read" id = "read" value="true" type="radio">
+            <label for = "unread">Unread</label>
+            <input name="read" id = "unread" type = radio value= "false" checked>
+        </div>
+        <button id="submission" type="submit">Add Book</button>
+    </form>
+    
+</body>
+</html>

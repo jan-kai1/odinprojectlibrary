@@ -8,7 +8,7 @@
     font-family: 'Vollkorn', sans-serif;
 }
 
-.container{
+.library-container{
     display:grid;
     grid-template: 1fr 5fr/ 1fr;
 
@@ -53,3 +53,23 @@ padding: .5em;
 border: 1px solid lightgrey;
 }
 
+
+
+
+form{
+    margin: 0 auto;
+    text-align: center;
+    display:flex;
+    flex-direction: column;
+    height:40vh;
+}
+form>.forminput{
+    flex:1;
+}
+form>input{
+    width:60%;
+}
+form>button{
+    width:5vw;
+    align-self: center;
+}
