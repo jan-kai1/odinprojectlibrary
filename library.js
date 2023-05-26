@@ -1,4 +1,12 @@
-myLibrary =[]
+//check if session data has library
+if (sessionStorage.getItem("myLibrary")){
+    myLibrary = JSON.parse(sessionStorage.getItem("myLibrary"))
+    console.log("libray found")
+}
+else
+{
+    myLibrary = []
+}
 libraryButtonList = []
 
 document.addEventListener("DOMContentLoaded", function()
@@ -22,9 +30,52 @@ document.addEventListener("DOMContentLoaded", function()
     //https://keepingupwiththepenguins.com/reading-list-page-count-classic-and-best-seller-books-from-shortest-to-longest/
     
     thirtyNineSteps = new Book('The Thirty-Nine Steps','John Buchan', 138);
-    myLibrary.push(thirtyNineSteps);
-    murphy = new Book('Murphy', 'Samuel Beckett', 158);
-    myLibrary.push(murphy);
+    murphy = new Book('Murphy','Samuel Beckett', 158);
+    if (myLibrary.length == 0)
+    {
+        myLibrary.push(thirtyNineSteps);
+        myLibrary.push(murphy)
+    }
+    else if (myLibrary.length != 0)
+    {
+        for (book of myLibrary)
+    {
+        if (book['title'] != thirtyNineSteps['title'])
+        {
+            continue;
+        }
+        else if(book['title'] == thirtyNineSteps['title'])
+        {
+            console.log("duplicate found")
+            break;
+        }
+        else
+        {
+            myLibrary.push(thirtyNineSteps)
+            console.log("thirty nine added")
+        }
+
+    }
+    for (book of myLibrary)
+    {
+        if (book['title'] != murphy['title'])
+        {
+            continue;
+        }
+        else if(book['title'] == murphy['title'])
+        {
+            console.log("duplicate found")
+            break;
+        }
+        else
+        {
+            myLibrary.push(murphy)
+            console.log("murphy added")
+        }
+
+    }
+    }
+    
     
    loadTable(myLibrary, bookTable)
    
@@ -37,6 +88,7 @@ document.addEventListener("DOMContentLoaded", function()
 loadTable = function(library, table)
 {   
     libraryButtonList=[];
+    deleteButtonList = [];
     
     if (!table)
     {
@@ -68,31 +120,49 @@ loadTable = function(library, table)
             bookRow.appendChild(keyInfo);
         }
         // add a button to the row
-        buttonCell = document.createElement("td");
+        readButtonCell = document.createElement("td");
         readButton = document.createElement("button");
         readButton.setAttribute("value", book['title']);
         readButton.setAttribute("id", book['title']);
         readButton.textContent = "Read?"
+
+        //delete button cell
+        deleteButtonCell = document.createElement("td");
+        deleteButton = document.createElement("button");
+        deleteButton.setAttribute("value" , book['title']);
+        deleteButton.setAttribute("id",book['title']);
+        deleteButton.textContent = "Delete?"
+
+
         //add button to list for event listeners
         //reset button list
-        
+        if (deleteButtonList.includes(deleteButton) == false)
+        {
+            deleteButtonList.push(deleteButton);
+        }
         if (libraryButtonList.includes(readButton) == false)
         {
             libraryButtonList.push(readButton);
         }
         //need to readd event listeners
-        buttonCell.appendChild(readButton);
-        bookRow.appendChild(buttonCell);
+        
+        readButtonCell.appendChild(readButton);
+        deleteButtonCell.appendChild(deleteButton)
+        bookRow.appendChild(readButtonCell);
+        bookRow.appendChild(deleteButtonCell);
         table.appendChild(bookRow);
     }
 
     //create list of buttons for the table
-    buttonEventListeners(libraryButtonList, table, library)
-    
+    readButtonEventListeners(libraryButtonList, table, library)
+    deleteButtonEventListener(deleteButtonList, table, library)
+    //add library list to sessiondata
+    jsonLibrary = JSON.stringify(library);
+    sessionStorage.setItem('myLibrary', jsonLibrary);
    
 }
 
-function buttonEventListeners(buttonlist,table,library)
+function readButtonEventListeners(buttonlist,table,library)
 {   
     for (button of buttonlist)
     {
@@ -125,4 +195,26 @@ function buttonEventListeners(buttonlist,table,library)
         });
     }
 
+}
+
+function deleteButtonEventListener(buttonlist,table,library)
+{
+    for(button of buttonlist)
+    {
+        button.addEventListener("click", function()
+        {
+
+            searchTitle = this.getAttribute("value")
+            for (let i = 0; i < library.length; i++)
+            {
+                if (library[i]['title'] == searchTitle)
+                {
+                    library.splice(i,1);
+                   
+                }
+            }
+            table.innerHTML = "";
+            loadTable(library,table);
+        })
+    }
 }
