@@ -1,7 +1,8 @@
+myLibrary =[]
+libraryButtonList = []
+
 document.addEventListener("DOMContentLoaded", function()
 {
-    myLibrary =[]
-    libraryButtonList = []
     const bookTable = document.querySelector("#booktable");
     class Book
     {
@@ -25,45 +26,19 @@ document.addEventListener("DOMContentLoaded", function()
     murphy = new Book('Murphy', 'Samuel Beckett', 158);
     myLibrary.push(murphy);
     
-   loadTable(myLibrary)
+   loadTable(myLibrary, bookTable)
    
-//    for (button of libraryButtonList)
-//    {
-//        button.addEventListener("click", function()
-//        {
-//            //change the value of .read in the table
-//            searchTitle = this.getAttribute("value");
-//            //search for the title inside the myLibrary array
-//            for (book of library)
-//            {
-//                if (book['title'] == searchTitle)
-//                {
-//                    //change book read status
-//                    if (book['read'] == false)
-//                    {
-//                        book['read'] == true;
-//                    }
-//                    else
-//                    {
-//                        book['read'] == false;
-//                    }
-//                }
-//            }
-//            //TODO REFRESH THE TABLE
-//            // DELETE INNER HTML OR 
-
-
-//        });
-//    }
+  
 });
 
 
 //create function that loads table
 //TODO FIX ISSUE WITH BUTTON LIST KEEP ADDING MORE BUTTONS ON REFRESH
-loadTable = function(library)
+loadTable = function(library, table)
 {   
-    bookTable = document.querySelector("#booktable");
-    if (!bookTable)
+    libraryButtonList=[];
+    
+    if (!table)
     {
         console.log("NO TABLE")
     }
@@ -99,16 +74,27 @@ loadTable = function(library)
         readButton.setAttribute("id", book['title']);
         readButton.textContent = "Read?"
         //add button to list for event listeners
-        libraryButtonList.push(readButton);
+        //reset button list
+        
+        if (libraryButtonList.includes(readButton) == false)
+        {
+            libraryButtonList.push(readButton);
+        }
+        //need to readd event listeners
         buttonCell.appendChild(readButton);
         bookRow.appendChild(buttonCell);
-        bookTable.appendChild(bookRow);
+        table.appendChild(bookRow);
     }
 
     //create list of buttons for the table
-
+    buttonEventListeners(libraryButtonList, table, library)
     
-    for (button of libraryButtonList)
+   
+}
+
+function buttonEventListeners(buttonlist,table,library)
+{   
+    for (button of buttonlist)
     {
         button.addEventListener("click", function()
         {
@@ -122,20 +108,21 @@ loadTable = function(library)
                     //change book read status
                     if (book['read'] == false)
                     {
-                        book['read'] == true;
+                        book['read'] = true;
                     }
                     else
                     {
-                        book['read'] == false;
+                        book['read'] = false;
                     }
                 }
             }
             //TODO REFRESH THE TABLE
             // DELETE INNER HTML OR 
-            bookTable.innerHTML= "";
-
-
-
+            table.innerHTML= "";
+            loadTable(library,table);
+ 
+ 
         });
     }
+
 }
